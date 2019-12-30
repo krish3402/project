@@ -1,1 +1,1 @@
-
+./bin/standalone.sh -Djboss.node.name=node1 -Djboss.server.base.dir=$JBOSS_HOME/node1 -Dorg.jboss.boot.log.file=$JBOSS_HOME/node1/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=1 &
