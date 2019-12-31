@@ -1,0 +1,34 @@
+ - hosts: jboss
+   gather_facts: true
+   remote_user: root
+   become: True
+   vars:
+     JBOSS_HOME: /root/jboss-eap-7.2
+   tasks:
+      - name: nodes stop all
+        shell: "{{item}}"
+        async: 50
+        poll: 25
+        with_items:
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:9991 command=:shutdown &
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:10001 command=:shutdown &
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:10011 command=:shutdown &
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:10021 command=:shutdown &
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:10031 command=:shutdown &
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:10041 command=:shutdown &
+          - nohup  {{JBOSS_HOME}}/bin/jboss-cli.sh --connect --controller=localhost:10051 command=:shutdown &
+        tags: stop
+
+      - name: all nodes start
+        shell: "{{item}}"
+        async: 100
+        poll: 25
+        with_items:
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node1 -Djboss.server.base.dir={{JBOSS_HOME}}/node1 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node1/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=1 &
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node2 -Djboss.server.base.dir={{JBOSS_HOME}}/node2 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node2/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=11 &
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node3 -Djboss.server.base.dir={{JBOSS_HOME}}/node3 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node3/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=21 &
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node4 -Djboss.server.base.dir={{JBOSS_HOME}}/node4 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node4/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=31 &
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node5 -Djboss.server.base.dir={{JBOSS_HOME}}/node5 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node5/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=41 &
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node6 -Djboss.server.base.dir={{JBOSS_HOME}}/node6 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node6/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=51 &
+          - nohup sh {{JBOSS_HOME}}/bin/standalone.sh -Djboss.node.name=node7 -Djboss.server.base.dir={{JBOSS_HOME}}/node7 -Dorg.jboss.boot.log.file={{JBOSS_HOME}}/node7/configuration/logging.properties -c standalone.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=61 &
+        tags: start
