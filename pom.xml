@@ -23,12 +23,12 @@
   <repository>
      <id>deployment</id>
      <name>Internal Releases</name>
-     <url>http://3.80.167.127:8080/nexus-latest/content/repositories/releases/</url>
+     <url>http://localhost:8081/repository/mvn-release/</url>
   </repository>
   <snapshotRepository>
      <id>deployment</id>
      <name>snapshot </name>
-     <url>http://3.80.167.127:8080/nexus-latest/content/repositories/snapshots/</url>
+     <url>http://localhost:8081/repository/mvn-snapshot/</url>
   </snapshotRepository>
 </distributionManagement>
 
